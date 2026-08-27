@@ -1,0 +1,62 @@
+{
+  "id": "spacex-api-xunia-mission-intelligence",
+  "name": "SpaceX API XUNIA Mission Intelligence Layer",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "root": "XUNIA / XuniaDAO",
+  "command": "/glass mission spacex",
+  "language": "VIRGINIA",
+  "source": {
+    "repository": "sonoxo/SpaceX-APIxunia",
+    "upstream": "r-spacex/SpaceX-API",
+    "dataClass": "PUBLIC_API",
+    "operationalSystemConnection": false,
+    "vendorAffiliationClaim": false
+  },
+  "objectTypes": [
+    "MISSION_LAUNCH",
+    "ROCKET",
+    "LAUNCHPAD",
+    "PAYLOAD",
+    "CAPSULE",
+    "SHIP",
+    "STARLINK_RECORD",
+    "SOURCE_EVIDENCE"
+  ],
+  "linkTypes": [
+    "USES_ROCKET",
+    "LAUNCHES_FROM",
+    "CARRIES_PAYLOAD",
+    "USES_CAPSULE",
+    "SUPPORTED_BY_EVIDENCE"
+  ],
+  "pipeline": [
+    "PUBLIC_SPACEX_API",
+    "PROVENANCE_CAPTURE",
+    "XUNIA_NORMALIZE",
+    "GLASS_ONION_ONTOLOGY",
+    "VIRGINIA_QUERY",
+    "VA3LM_REASON",
+    "ZYRA_VERIFY",
+    "HUMAN_REVIEW"
+  ],
+  "virginiaCommands": [
+    "SPACEX LATEST",
+    "SPACEX LAUNCHES",
+    "SPACEX ROCKETS",
+    "SPACEX LAUNCHPADS",
+    "MISSION TWIN STATUS"
+  ],
+  "controls": {
+    "publicDataOnly": true,
+    "readOnly": true,
+    "provenanceRequired": true,
+    "humanReviewForConsequentialOutput": true,
+    "credentialStorage": false,
+    "orderOrFundMovement": false,
+    "flightControl": false,
+    "telecommandTransmission": false,
+    "vehicleActuation": false,
+    "vendorAffiliationClaim": false
+  }
+}
