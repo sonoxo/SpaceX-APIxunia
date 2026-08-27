@@ -1,0 +1,56 @@
+name: XUNIA Mission Intelligence
+
+on:
+  pull_request:
+    paths:
+      - 'xunia/**'
+      - '.github/workflows/xunia-mission-intel.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'xunia/**'
+      - '.github/workflows/xunia-mission-intel.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Adapter tests
+        run: node --test xunia/mission-intel.test.js
+      - name: Layer contract lock
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const assert = require('assert');
+          const layer = JSON.parse(fs.readFileSync('xunia/layer.json', 'utf8'));
+          assert.equal(layer.status, 'ACTIVE');
+          assert.equal(layer.command, '/glass mission spacex');
+          assert.equal(layer.language, 'VIRGINIA');
+          assert.equal(layer.source.dataClass, 'PUBLIC_API');
+          assert.equal(layer.source.operationalSystemConnection, false);
+          assert.equal(layer.source.vendorAffiliationClaim, false);
+          assert.equal(layer.controls.publicDataOnly, true);
+          assert.equal(layer.controls.readOnly, true);
+          assert.equal(layer.controls.provenanceRequired, true);
+          assert.equal(layer.controls.flightControl, false);
+          assert.equal(layer.controls.telecommandTransmission, false);
+          assert.equal(layer.controls.vehicleActuation, false);
+          assert.ok(layer.pipeline.includes('XUNIA_NORMALIZE'));
+          assert.ok(layer.pipeline.includes('GLASS_ONION_ONTOLOGY'));
+          assert.ok(layer.pipeline.includes('VIRGINIA_QUERY'));
+          assert.ok(layer.pipeline.includes('VA3LM_REASON'));
+          assert.ok(layer.pipeline.includes('ZYRA_VERIFY'));
+          assert.ok(layer.objectTypes.includes('MISSION_LAUNCH'));
+          assert.ok(layer.objectTypes.includes('SOURCE_EVIDENCE'));
+          console.log('SPACEX API XUNIA LAYER LOCK: PASS');
+          NODE
+      - name: Motion asset lock
+        run: |
+          test -s xunia/SPACEX-XUNIA-MOTION.svg
+          grep -q 'animateMotion' xunia/SPACEX-XUNIA-MOTION.svg
+          grep -q 'animateTransform' xunia/SPACEX-XUNIA-MOTION.svg
