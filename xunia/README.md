@@ -1,25 +1,65 @@
-# XUNIA Mission Telemetry Twin
+# 🚀 SpaceX API XUNIA Mission Intelligence Layer
 
-This adapter turns public SpaceX REST API data into provenance-bearing XUNIA ontology objects for simulation, analytics, dashboards, and Palantir-style ontology workflows.
+<p align="center">
+  <img src="./SPACEX-XUNIA-MOTION.svg" alt="Animated SpaceX API XUNIA mission intelligence architecture" width="100%" />
+</p>
 
-## Pipeline
+**Command:** `/glass mission spacex`  
+**Language:** `VIRGINIA`  
+**Root:** `XUNIA / XuniaDAO`
 
-`PUBLIC API → XUNIA NORMALIZE → GLASS ONION PROVENANCE → VIRGINIA QUERY → MISSION TWIN → HUMAN-REVIEWED OUTPUT`
+This layer converts public SpaceX REST API records into provenance-bearing XUNIA ontology objects for mission dashboards, simulation, analytics, evidence export, and governed reasoning.
 
-Supported read entities: launches, rockets, launchpads, payloads, capsules, ships, and Starlink records.
+## Architecture
 
-The adapter is **read/simulation only**. `FLIGHT_COMMAND`, `VEHICLE_COMMAND`, `TELECOMMAND`, `CONTROL`, and `ACTUATE` are explicitly blocked. It does not connect to SpaceX operational systems and does not imply SpaceX affiliation or endorsement.
+```text
+PUBLIC_SPACEX_API
+  → PROVENANCE_CAPTURE
+  → XUNIA_NORMALIZE
+  → GLASS_ONION_ONTOLOGY
+  → VIRGINIA_QUERY
+  → VA3LM_REASON
+  → ZYRA_VERIFY
+  → HUMAN_REVIEW
+```
 
-## Example
+Machine contract: [`layer.json`](./layer.json)
+
+## Ontology
+
+Objects:
+
+`MISSION_LAUNCH · ROCKET · LAUNCHPAD · PAYLOAD · CAPSULE · SHIP · STARLINK_RECORD · SOURCE_EVIDENCE`
+
+Links:
+
+`USES_ROCKET · LAUNCHES_FROM · CARRIES_PAYLOAD · USES_CAPSULE · SUPPORTED_BY_EVIDENCE`
+
+VIRGINIA query surface:
+
+```text
+SPACEX LATEST
+SPACEX LAUNCHES
+SPACEX ROCKETS
+SPACEX LAUNCHPADS
+MISSION TWIN STATUS
+```
+
+## Adapter
 
 ```js
 import { fetchLatestLaunch } from "./mission-intel.js";
+
 const launch = await fetchLatestLaunch();
 console.log(launch);
 ```
 
-## XUNIAverse visual layer
+Supported public read entities include launches, rockets, launchpads, payloads, capsules, ships, and Starlink records. Each normalized record carries source metadata and retrieval provenance.
 
-<p align="center"><a href="https://github.com/sonoxo/NASA-3D-ResourcesXUNIA-"><img src="https://raw.githubusercontent.com/sonoxo/NASA-3D-ResourcesXUNIA-/master/Images%20and%20Textures/Hipparcos%20Star%20Map/preview.webp" alt="XUNIAverse star-map visual" width="100%" /></a></p>
+## Safety boundary
 
-Source visual: NASA 3D Resources / Hipparcos Star Map preview. No NASA endorsement or affiliation implied.
+This is a **public-data, read/simulation-only intelligence layer**. It does not connect to SpaceX operational systems and does not imply SpaceX affiliation or endorsement. Flight-control, vehicle-command, telecommand, control, and actuation operations are explicitly outside this layer.
+
+## XUNIAverse
+
+The layer feeds the XUNIA mission-twin architecture maintained in [`sonoxo/xuniadao`](https://github.com/sonoxo/xuniadao). Existing upstream ownership, Apache-2.0 licensing, trademarks, and attribution remain unchanged.
