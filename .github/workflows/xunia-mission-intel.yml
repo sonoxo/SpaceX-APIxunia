@@ -1,0 +1,24 @@
+name: XUNIA Mission Intelligence
+
+on:
+  pull_request:
+    paths:
+      - 'xunia/**'
+      - '.github/workflows/xunia-mission-intel.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'xunia/**'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx jest xunia/mission-intel.test.js --runInBand
