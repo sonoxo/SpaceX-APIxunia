@@ -19,6 +19,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npx jest xunia/mission-intel.test.js --runInBand
+      - run: node --test xunia/mission-intel.test.js
